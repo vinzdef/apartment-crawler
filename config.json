@@ -1,0 +1,14 @@
+{
+	"fb": {
+		"email": "<FB_EMAIL>",
+		"pass": "<FB_PASS>L",
+		"groups": [
+            "https://m.facebook.com/groups/<GROUP_NAME_OR_ID>/",
+			"https://m.facebook.com/groups/<GROUP_NAME_OR_ID>/"
+		]
+	},
+
+	"kamernet": {
+		"sessionToken": "<KAMERNET_SESSION_TOKEN>"
+	}
+}

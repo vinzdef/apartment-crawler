@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Apartment Scraper</title>
+	<base target="_blank">
+
+	<style>
+		html, body, main {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+		}
+
+		main {
+			display: flex;
+			flex-flow: row wrap; 
+		}
+
+		.Post {
+			margin: 1rem;
+			width: calc(33.3333% - 2rem);
+			flex: none;
+
+			background-color: #a0a0a0;
+			position: relative;
+		}
+
+		.Post header {
+			padding: 1rem;
+			display: flex;
+			justify-content: space-between;
+			background-color: rgba(0,0,0,0.2);
+			z-index: 1;
+		}
+
+		.Post .Content {
+			position: relative;
+			z-index: 1;
+			background-color: rgba(255, 255, 255, 0.5);
+			line-height: 1.4em;
+
+			max-height: 33vh;
+			overflow: auto;
+		}
+
+		.Post header a {
+			color: white;
+			text-decoration: none;
+		}
+
+		.Post .Image {
+			position: absolute;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			background-size: cover;
+			z-index: 0;
+		}
+
+		.Post .Description {
+			padding: 1rem;
+		}
+
+		.template {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="Post template">
+		<div class="Image"></div>
+
+		<div class="Content">
+			<header>
+				<a class="Author"></a>
+				<a class="Link"></a>
+			</header>
+
+			<div class="Description"></div>
+		</div>
+	</div>
+
+	<main></main>
+	
+	<script>
+		window.onload = init
+
+		function init() {
+			fetch('./posts.json')
+				.then(r => {
+					return r.json()
+				}).then(json => {
+					return fillPosts(json)
+				})
+		}
+
+		function fillPosts(posts) {
+			var template = document.querySelector('.Post.template')
+			var wrapper = document.querySelector('main')
+				
+			Object.keys(posts).forEach(postHash => {
+				var post = JSON.parse(posts[postHash])
+
+				var clone = template.cloneNode(true)
+				clone.classList.remove('template')
+				
+				clone.querySelector('.Link').href = post.link
+				clone.querySelector('.Link').textContent = post.source
+
+				clone.querySelector('.Author').href = post.author.link
+				clone.querySelector('.Author').textContent = post.author.name
+
+				clone.querySelector('.Description').textContent = post.content
+
+				if (post.image) {
+					console.log(clone.querySelector('.Image').style)
+					clone.querySelector('.Image').style.backgroundImage = "url(" + post.image + ")"
+				}
+
+				wrapper.appendChild(clone)
+			})
+		}
+	</script>
+</body>
+</html>
